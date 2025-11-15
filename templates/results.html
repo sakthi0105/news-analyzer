@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company_name }} - Analysis Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left h1 {
+            color: #1a1a1a;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .company-name {
+            color: #667eea;
+        }
+
+        .header-badge {
+            background: #10b981;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #667eea;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Stock Card */
+        .stock-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f3f4f6;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stock-info h2 {
+            font-size: 1.8em;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .stock-symbol {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 15px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .stock-price {
+            text-align: right;
+        }
+
+        .price {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .change {
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1em;
+            display: inline-block;
+        }
+
+        .positive {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .negative {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .stock-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 25px;
+        }
+
+        .meta-item {
+            text-align: center;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 12px;
+        }
+
+        .meta-label {
+            color: #9ca3af;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .meta-value {
+            color: #1a1a1a;
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+
+        /* News Sections */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .news-section {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+        }
+
+        .positive-section .section-header {
+            border-bottom-color: #10b981;
+        }
+
+        .negative-section .section-header {
+            border-bottom-color: #ef4444;
+        }
+
+        .section-icon {
+            font-size: 2.2em;
+            margin-right: 15px;
+        }
+
+        .section-title {
+            font-size: 1.6em;
+            font-weight: 700;
+        }
+
+        .positive-section .section-title {
+            color: #10b981;
+        }
+
+        .negative-section .section-title {
+            color: #ef4444;
+        }
+
+        .news-item {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 18px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .positive-section .news-item {
+            border-left-color: #10b981;
+        }
+
+        .negative-section .news-item {
+            border-left-color: #ef4444;
+        }
+
+        .news-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .news-title {
+            font-weight: 600;
+            font-size: 1.05em;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .news-title a {
+            color: #1a1a1a;
+            text-decoration: none;
+        }
+
+        .news-title a:hover {
+            color: #667eea;
+        }
+
+        .news-snippet {
+            color: #6b7280;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .news-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+        }
+
+        .news-source {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .sentiment-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .positive-section .sentiment-badge {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .negative-section .sentiment-badge {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 30px;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-radius: 15px;
+            border: 2px dashed #86efac;
+        }
+
+        .empty-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .empty-title {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .empty-text {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        /* All Articles Section */
+        .all-articles {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 40px;
+        }
+
+        .all-articles-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .all-articles-header h2 {
+            font-size: 1.8em;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .article-card {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .article-card[data-sentiment="positive"] {
+            border-left-color: #10b981;
+        }
+
+        .article-card[data-sentiment="negative"] {
+            border-left-color: #ef4444;
+        }
+
+        .article-card[data-sentiment="neutral"] {
+            border-left-color: #9ca3af;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-card.hidden {
+            display: none;
+        }
+
+        .article-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .article-badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .article-badge.positive {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .article-badge.negative {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .article-badge.neutral {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .article-score {
+            background: white;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.9em;
+        }
+
+        .article-title {
+            font-size: 1.05em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .article-title a {
+            color: #1a1a1a;
+            text-decoration: none;
+        }
+
+        .article-title a:hover {
+            color: #667eea;
+        }
+
+        .article-snippet {
+            color: #6b7280;
+            font-size: 0.9em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .article-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            padding-top: 12px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .article-source {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .news-grid,
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stock-header {
+                flex-direction: column;
+            }
+
+            .stock-price {
+                text-align: left;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <h1>Analysis: <span class="company-name">{{ company_name }}</span></h1>
+                <span class="header-badge">📊 From Database</span>
+            </div>
+            <div class="header-actions">
+                <a href="/" class="btn btn-primary">← New Search</a>
+                <a href="/refresh/{{ company_name }}" class="btn btn-secondary">🔄 Refresh</a>
+            </div>
+        </div>
+
+        <!-- Stock Card -->
+        {% if stock_data %}
+        <div class="stock-card">
+            <div class="stock-header">
+                <div class="stock-info">
+                    <h2>{{ stock_data.name }}</h2>
+                    <span class="stock-symbol">{{ stock_data.symbol }}</span>
+                </div>
+                <div class="stock-price">
+                    <div class="price">${{ "%.2f"|format(stock_data.price) }}</div>
+                    <span class="change {% if stock_data.change >= 0 %}positive{% else %}negative{% endif %}">
+                        {% if stock_data.change >= 0 %}▲{% else %}▼{% endif %}
+                        ${{ "%.2f"|format(stock_data.change|abs) }} ({{ "%.2f"|format(stock_data.change_percent|abs) }}%)
+                    </span>
+                </div>
+            </div>
+            <div class="stock-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Day High</div>
+                    <div class="meta-value">${{ "%.2f"|format(stock_data.day_high) if stock_data.day_high > 0 else 'N/A' }}</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Day Low</div>
+                    <div class="meta-value">${{ "%.2f"|format(stock_data.day_low) if stock_data.day_low > 0 else 'N/A' }}</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Market Cap</div>
+                    <div class="meta-value">
+                        {% if stock_data.market_cap and stock_data.market_cap != 'N/A' %}
+                            ${{ "{:,.0f}B".format(stock_data.market_cap / 1000000000) }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Statistics Bar -->
+        {% if not no_results %}
+        <div class="stats-bar">
+            <div>
+                <div class="stat-value" style="color: #667eea;">{{ total_articles }}</div>
+                <div class="stat-label">Total Articles</div>
+            </div>
+            <div>
+                <div class="stat-value" style="color: #10b981;">{{ positive_count }}</div>
+                <div class="stat-label">Positive</div>
+            </div>
+            <div>
+                <div class="stat-value" style="color: #9ca3af;">{{ neutral_count }}</div>
+                <div class="stat-label">Neutral</div>
+            </div>
+            <div>
+                <div class="stat-value" style="color: #ef4444;">{{ negative_count }}</div>
+                <div class="stat-label">Negative</div>
+            </div>
+        </div>
+
+        <!-- Top Positive & Negative News -->
+        <div class="news-grid">
+            <!-- Positive News -->
+            <div class="news-section positive-section">
+                <div class="section-header">
+                    <span class="section-icon">😊</span>
+                    <h3 class="section-title">Top Positive</h3>
+                </div>
+                {% if positive_news %}
+                    {% for article in positive_news %}
+                    <div class="news-item">
+                        <div class="news-title">
+                            <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
+                        </div>
+                        <div class="news-snippet">{{ article.snippet }}</div>
+                        <div class="news-footer">
+                            <span class="news-source">{{ article.source }}</span>
+                            <span class="sentiment-badge">{{ "%.2f"|format(article.sentiment_score) }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-icon">😐</div>
+                        <div class="empty-title">No Positive News</div>
+                        <div class="empty-text">No strongly positive articles found</div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Negative News -->
+            <div class="news-section negative-section">
+                <div class="section-header">
+                    <span class="section-icon">😟</span>
+                    <h3 class="section-title">Top Negative</h3>
+                </div>
+                {% if negative_news %}
+                    {% for article in negative_news %}
+                    <div class="news-item">
+                        <div class="news-title">
+                            <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
+                        </div>
+                        <div class="news-snippet">{{ article.snippet }}</div>
+                        <div class="news-footer">
+                            <span class="news-source">{{ article.source }}</span>
+                            <span class="sentiment-badge">{{ "%.2f"|format(article.sentiment_score) }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-icon">🎉</div>
+                        <div class="empty-title">No Negative News!</div>
+                        <div class="empty-text">All articles are positive or neutral</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- All Articles Section -->
+        {% if all_articles %}
+        <div class="all-articles">
+            <div class="all-articles-header">
+                <span class="section-icon">📋</span>
+                <h2>All Articles ({{ all_articles|length }})</h2>
+            </div>
+
+            <div class="filter-tabs">
+                <button onclick="filterArticles('all')" class="filter-btn active" data-filter="all">
+                    All ({{ all_articles|length }})
+                </button>
+                <button onclick="filterArticles('positive')" class="filter-btn" data-filter="positive">
+                    Positive ({{ positive_count }})
+                </button>
+                <button onclick="filterArticles('neutral')" class="filter-btn" data-filter="neutral">
+                    Neutral ({{ neutral_count }})
+                </button>
+                <button onclick="filterArticles('negative')" class="filter-btn" data-filter="negative">
+                    Negative ({{ negative_count }})
+                </button>
+            </div>
+
+            <div class="articles-grid">
+                {% for article in all_articles %}
+                <div class="article-card" data-sentiment="{{ article.sentiment_category }}">
+                    <div class="article-header">
+                        <span class="article-badge {{ article.sentiment_category }}">
+                            {% if article.sentiment_category == 'positive' %}😊 Positive
+                            {% elif article.sentiment_category == 'negative' %}😟 Negative
+                            {% else %}😐 Neutral
+                            {% endif %}
+                        </span>
+                        <span class="article-score">{{ "%.2f"|format(article.sentiment_score) }}</span>
+                    </div>
+                    <div class="article-title">
+                        <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
+                    </div>
+                    <div class="article-snippet">{{ article.snippet }}</div>
+                    <div class="article-footer">
+                        <span class="article-source">{{ article.source }}</span>
+                        <span style="color: #9ca3af;">{{ article.fetched_at[:10] if article.fetched_at else '' }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- No Results -->
+        <div class="all-articles">
+            <div style="text-align: center; padding: 60px 20px;">
+                <div style="font-size: 5em; margin-bottom: 20px;">🔍</div>
+                <h2 style="color: #1a1a1a; margin-bottom: 15px;">No Data Found</h2>
+                <p style="color: #6b7280; font-size: 1.1em;">No analysis data found for {{ company_name }}. Try refreshing.</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function filterArticles(category) {
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${category}"]`).classList.add('active');
+
+            // Filter articles
+            document.querySelectorAll('.article-card').forEach(card => {
+                if (category === 'all') {
+                    card.classList.remove('hidden');
+                } else {
+                    if (card.getAttribute('data-sentiment') === category) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
